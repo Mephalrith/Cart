@@ -15,9 +15,11 @@ var basePrices []Price
 
 func Round(x float64) float64 {
 	t := math.Trunc(x)
+
 	if math.Abs(x-t) >= 0.5 {
 		return t + math.Copysign(1, x)
 	}
+
 	return t
 }
 
@@ -63,12 +65,10 @@ func main() {
 	fmt.Println("Enter Cart path.json:")
 	cartInput, _ := reader.ReadString('\n')
 	readInput(cartInput, &cart)
-	//readInput("one.json", &cart)
 
 	fmt.Println("Enter Base Prices path.json:")
 	priceInput, _ := reader.ReadString('\n')
 	readInput(priceInput, &basePrices)
-	//readInput("prices.json", &basePrices)
 
 	cartTotal := 0
 
