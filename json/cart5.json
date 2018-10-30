@@ -1,0 +1,36 @@
+[
+  {
+    "product-type": "leggings",
+    "options": {
+    },
+    "artist-markup": 20,
+    "quantity": 2
+  },
+  {
+    "product-type": "hoodie",
+    "options": {
+      "size": "medium",
+      "colour": "dark",
+      "print-location": "back",
+      "print": "dragon"
+    },
+    "artist-markup": 20,
+    "quantity": 2
+  },
+  {
+    "product-type": "sticker",
+    "options": {
+      "size": "small"
+    },
+    "artist-markup": 20,
+    "quantity": 2
+  },
+  {
+    "product-type": "sticker",
+    "options": {
+      "size": "medium"
+    },
+    "artist-markup": 20,
+    "quantity": 3
+  }
+]

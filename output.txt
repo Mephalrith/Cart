@@ -1,0 +1,60 @@
+Output of the hoodie map:
+hoodie map[
+  size:2xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+  size:3xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+  colour:white:map[size:xl:4108 size:2xl:4108 size:3xl:4108 colour:white:4108]
+
+  colour:dark:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]        <- This map is missing the option of size:small
+
+  size:small:map[colour:white:3800 colour:dark:3800 size:small:3800 size:medium:3800]
+  size:medium:map[size:small:3800 size:medium:3800 colour:white:3800 colour:dark:3800]
+  size:large:map[colour:dark:4212 size:large:4212]
+  size:xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+]
+
+Output of the prices map:
+map[
+    hoodie:map[
+        size:3xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+        colour:white:map[colour:white:4108 size:xl:4108 size:2xl:4108 size:3xl:4108]
+
+        colour:dark:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]          <- This map is missing the option of size:small
+
+        size:small:map[colour:white:3800 colour:dark:3800 size:small:3800 size:medium:3800]
+        size:medium:map[colour:white:3800 colour:dark:3800 size:small:3800 size:medium:3800]
+        size:large:map[colour:dark:4212 size:large:4212]
+        size:xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+        size:2xl:map[size:xl:4368 size:2xl:4368 size:3xl:4368 colour:dark:4368]
+    ]
+    sticker:map[
+        size:large:1000 size:xl:1417 size:small:221 size:medium:583
+    ]
+    leggings:5000
+]
+
+
+It looks to me like if the program decides to use colour:dark as the first key, then it only sees the key values with price 4368, and doesn't think to look at the size: small options.
+It works some of the time, because it has a 1/x chance of picking the color as the key before the size. This could happen with other values too. In this case, if it's a large dark hoodie,
+sometimes it will say "okay, large then dark, value is 4212." but other times it will say "okay, dark then large, but dark doesn't have a key for large.... value is <nil>!"
+There are other examples where this will also be an issue. A white 3xl hoodie: if the first key is 3xl, white will be <nil>, but if the first key is white, then it will evaluate 4108.
+
+This is caused either because we're not creating maps for every single possible iteration, or because the map of dark:map[small,medium,dark,white] is being
+overwritten by the map dark:map[xl,2xl,3xl] because they both have the key "dark" for this example.
+
+Output after my tampering:
+map[
+    hoodie:map[
+        colour:dark:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+        size:large:map[colour:dark:4212 size:large:4212]
+        size:xl:map[size:xl:4368 size:2xl:4368 size:3xl:4368 colour:dark:4368]
+        size:2xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+        size:3xl:map[colour:dark:4368 size:xl:4368 size:2xl:4368 size:3xl:4368]
+        size:small:map[colour:dark:3800 size:small:3800 size:medium:3800 colour:white:3800]
+        size:medium:map[size:small:3800 size:medium:3800 colour:white:3800 colour:dark:3800]
+        colour:white:map[size:xl:4108 size:2xl:4108 size:3xl:4108 colour:white:4108]
+    ]
+    sticker:map[
+        size:xl:1417 size:small:221 size:medium:583 size:large:1000
+    ]
+    leggings:5000
+]

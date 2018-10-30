@@ -57,6 +57,9 @@ func addToPricesMap(price Price) {
 		nextMap := make(map[string]interface{})
 
 		for _, key := range validKeys {
+			if val, ok := currentMap[key]; ok {
+				fmt.Println(key, val)
+			}
 			if depth == maxDepth {
 				currentMap[key] = price.BasePrice
 			} else {
@@ -109,6 +112,8 @@ func main() {
 	for _, price := range basePrices {
 		addToPricesMap(price)
 	}
+
+	fmt.Println(pricesMap)
 
 	cartTotal := 0
 	// Do the calculation for each item in the cart.
