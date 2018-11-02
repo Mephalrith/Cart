@@ -14,6 +14,8 @@ Process finished with exit code 0
 
 Automated tests include the creation of dummy items and base prices to test item methods, as well as benchmark tests for calculating final price and comparing item options to base price options.
 
+Tests require having Golang installed. It can be downloaded from [https://golang.org/](https://golang.org/).
+
 To run tests:
 ```
 go test -v redbubbleCart
