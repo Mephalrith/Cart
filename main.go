@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -42,17 +43,25 @@ func totalCartPrice() int {
 }
 
 func main() {
-	// Read in two command line arguments. First argument for cart path, second for prices path.
-	// If two command line arguments are not provided, panics with a helpful message.
-	if len(os.Args) != 3 {
-		panic("Paths to two json files required.\nRequired format: ./redbubbleCart path/to/cart.json path/to/prices.json")
-	}
-	cartArg := os.Args[1]
-	priceArg := os.Args[2]
+	// Uses flags to specify json file paths. Requires both cart path and prices path. If either
+	// is not present, will print help text and exit.
+	cartPath := flag.String("cart", "", "path to cart.json file (required)")
+	pricesPath := flag.String("prices", "", "path to base prices.json file (required)")
+	help := flag.Bool("help", false, "list of commands")
 
-	// Take paths and convert given json files to custom structs.
-	parseInput(cartArg, &cart)
-	parseInput(priceArg, &basePrices)
+	flag.Parse()
+
+	if *help == false {
+		if *cartPath == "" || *pricesPath == "" {
+			flag.PrintDefaults()
+			os.Exit(1)
+		}
+		// Take paths and convert given json files to custom structs.
+		parseInput(*cartPath, &cart)
+		parseInput(*pricesPath, &basePrices)
+	} else {
+		flag.PrintDefaults()
+	}
 
 	fmt.Printf("\nThe cart total: %v\n", totalCartPrice())
 }

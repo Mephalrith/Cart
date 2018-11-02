@@ -9,7 +9,7 @@ It should be executed with parameters consisting of a path to a cart.json file, 
 Example:
 
 ```
-./redbubbleCart /path/to/cart/file.json /path/to/prices/file.json
+./redbubbleCart -cart /path/to/file.json -prices /path/to/file.json
 
 The cart total: 9363
 
